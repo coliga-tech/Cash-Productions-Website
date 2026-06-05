@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CashhCam Productions — Music & Engineering Services</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --black: #080808;
+      --off-black: #0f0f0f;
+      --deep: #141414;
+      --card: #1a1a1a;
+      --border: rgba(255,255,255,0.07);
+      --border-light: rgba(255,255,255,0.14);
+      --gold: #c9a96e;
+      --gold-light: #e8c98a;
+      --gold-dim: rgba(201,169,110,0.15);
+      --white: #f5f0e8;
+      --muted: rgba(245,240,232,0.45);
+      --faint: rgba(245,240,232,0.18);
+      --red: #e05c4b;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Syne', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ── Noise texture overlay ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.028;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.4rem 3rem;
+      border-bottom: 1px solid transparent;
+      transition: background 0.4s, border-color 0.4s, padding 0.3s;
+    }
+    nav.scrolled {
+      background: rgba(8,8,8,0.92);
+      border-color: var(--border);
+      padding: 1rem 3rem;
+      backdrop-filter: blur(12px);
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: var(--white);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--gold); }
+    .nav-links { display: flex; gap: 2.4rem; align-items: center; }
+    .nav-links a {
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--white); }
+    .nav-cta {
+      background: var(--gold) !important;
+      color: var(--black) !important;
+      padding: 0.55rem 1.4rem;
+      font-weight: 700 !important;
+      letter-spacing: 0.1em;
+      transition: background 0.2s, transform 0.2s !important;
+    }
+    .nav-cta:hover { background: var(--gold-light) !important; transform: translateY(-1px); }
+
+    /* ── HERO ── */
+    #hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      justify-content: center;
+      padding: 0 3rem;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 70% 60% at 65% 40%, rgba(201,169,110,0.08) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 20% 70%, rgba(224,92,75,0.04) 0%, transparent 60%),
+        linear-gradient(160deg, #0f0f0f 0%, #080808 100%);
+      z-index: 0;
+    }
+    .hero-lines {
+      position: absolute; inset: 0;
+      background-image:
+        repeating-linear-gradient(0deg, transparent, transparent 79px, rgba(255,255,255,0.022) 80px),
+        repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(255,255,255,0.022) 80px);
+      z-index: 0;
+    }
+    .hero-content {
+      position: relative; z-index: 2;
+      max-width: 900px;
+    }
+    .hero-eyebrow {
+      display: flex; align-items: center; gap: 0.9rem;
+      margin-bottom: 1.6rem;
+      animation: fadeUp 0.9s 0.1s both;
+    }
+    .hero-eyebrow-line {
+      width: 36px; height: 1px;
+      background: var(--gold);
+    }
+    .hero-eyebrow span {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3.4rem, 8vw, 7.5rem);
+      font-weight: 900;
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.8rem;
+      animation: fadeUp 0.9s 0.25s both;
+    }
+    h1 em {
+      font-style: italic;
+      color: var(--gold);
+    }
+    .hero-sub {
+      font-size: 1.05rem;
+      font-weight: 400;
+      color: var(--muted);
+      max-width: 480px;
+      line-height: 1.7;
+      margin-bottom: 2.8rem;
+      animation: fadeUp 0.9s 0.4s both;
+    }
+    .hero-actions {
+      display: flex; gap: 1.2rem; align-items: center;
+      animation: fadeUp 0.9s 0.55s both;
+    }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      background: var(--gold);
+      color: var(--black);
+      font-family: 'Syne', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 1rem 2rem;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-primary:hover {
+      background: var(--gold-light);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(201,169,110,0.25);
+    }
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      background: transparent;
+      color: var(--white);
+      font-family: 'Syne', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 1rem 2rem;
+      text-decoration: none;
+      border: 1px solid var(--border-light);
+      transition: border-color 0.2s, color 0.2s, transform 0.2s;
+    }
+    .btn-ghost:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+      transform: translateY(-2px);
+    }
+    .hero-scroll {
+      position: absolute; bottom: 2.5rem; left: 3rem;
+      z-index: 2;
+      display: flex; align-items: center; gap: 1rem;
+      animation: fadeUp 1s 0.9s both;
+    }
+    .hero-scroll-line {
+      width: 1px; height: 48px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+    .hero-scroll span {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--faint);
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+    }
+    .hero-stat-strip {
+      position: absolute; right: 3rem; top: 50%;
+      transform: translateY(-50%);
+      z-index: 2;
+      display: flex; flex-direction: column; gap: 2.2rem;
+      animation: fadeUp 1s 0.7s both;
+    }
+    .hero-stat { text-align: right; }
+    .hero-stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: var(--gold);
+      line-height: 1;
+    }
+    .hero-stat-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 0.3rem;
+    }
+    .hero-divider { width: 1px; height: 60px; background: var(--border); margin-left: auto; }
+
+    /* ── MARQUEE ── */
+    .marquee-wrap {
+      position: relative;
+      overflow: hidden;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 0;
+      background: var(--off-black);
+    }
+    .marquee-track {
+      display: flex;
+      white-space: nowrap;
+      animation: marquee 28s linear infinite;
+    }
+    .marquee-track span {
+      display: inline-flex; align-items: center; gap: 1.8rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 0 2rem;
+    }
+    .marquee-dot {
+      width: 4px; height: 4px;
+      background: var(--gold);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* ── SECTION BASE ── */
+    section { position: relative; z-index: 2; }
+    .section-inner { max-width: 1200px; margin: 0 auto; padding: 7rem 3rem; }
+    .section-label {
+      display: flex; align-items: center; gap: 0.8rem;
+      margin-bottom: 1rem;
+    }
+    .section-label-line { width: 28px; height: 1px; background: var(--gold); }
+    .section-label span {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .section-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+    }
+    .section-heading em { font-style: italic; color: var(--gold); }
+    .section-sub {
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 480px;
+    }
+
+    /* ── SERVICES ── */
+    #services { background: var(--off-black); }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      margin-top: 4rem;
+      border: 1px solid var(--border);
+    }
+    .service-card {
+      background: var(--off-black);
+      padding: 2.8rem 2.4rem;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s;
+    }
+    .service-card::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--gold);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.35s ease;
+    }
+    .service-card:hover { background: var(--deep); }
+    .service-card:hover::before { transform: scaleX(1); }
+    .service-icon {
+      width: 48px; height: 48px;
+      border: 1px solid var(--border-light);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 1.8rem;
+      font-size: 1.2rem;
+      transition: border-color 0.3s, background 0.3s;
+    }
+    .service-card:hover .service-icon {
+      border-color: var(--gold);
+      background: var(--gold-dim);
+    }
+    .service-num {
+      position: absolute; top: 2rem; right: 2rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      color: var(--faint);
+    }
+    .service-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 0.9rem;
+    }
+    .service-desc {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 1.6rem;
+    }
+    .service-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .service-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid rgba(201,169,110,0.3);
+      padding: 0.3rem 0.7rem;
+    }
+
+    /* ── PROCESS ── */
+    #process { background: var(--black); }
+    .process-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      margin-top: 4rem;
+      align-items: start;
+    }
+    .process-steps { display: flex; flex-direction: column; gap: 0; }
+    .process-step {
+      display: flex; gap: 1.8rem;
+      padding: 2rem 0;
+      border-bottom: 1px solid var(--border);
+      transition: padding-left 0.3s;
+    }
+    .process-step:first-child { border-top: 1px solid var(--border); }
+    .process-step:hover { padding-left: 0.5rem; }
+    .process-step-num {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      color: var(--gold);
+      padding-top: 0.2rem;
+      flex-shrink: 0;
+    }
+    .process-step-body {}
+    .process-step-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .process-step-desc {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+    .process-aside {
+      position: sticky; top: 8rem;
+    }
+    .process-aside-card {
+      background: var(--deep);
+      border: 1px solid var(--border);
+      padding: 2.8rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .process-aside-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(to right, var(--gold), transparent);
+    }
+    .aside-quote {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.45rem;
+      font-style: italic;
+      font-weight: 400;
+      line-height: 1.55;
+      color: var(--white);
+      margin-bottom: 2rem;
+    }
+    .aside-attr {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .aside-divider { width: 100%; height: 1px; background: var(--border); margin: 2rem 0; }
+    .aside-facts { display: flex; gap: 2rem; }
+    .aside-fact-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--gold);
+      line-height: 1;
+    }
+    .aside-fact-label {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 0.25rem;
+      line-height: 1.4;
+    }
+
+    /* ── PORTFOLIO ── */
+    #portfolio { background: var(--off-black); }
+    .portfolio-header {
+      display: flex; justify-content: space-between; align-items: flex-end;
+      margin-bottom: 3rem;
+    }
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 1.2rem;
+    }
+    .port-item {
+      background: var(--deep);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      position: relative;
+    }
+    .port-item:nth-child(1) { grid-column: span 7; }
+    .port-item:nth-child(2) { grid-column: span 5; }
+    .port-item:nth-child(3) { grid-column: span 4; }
+    .port-item:nth-child(4) { grid-column: span 4; }
+    .port-item:nth-child(5) { grid-column: span 4; }
+    .port-thumb {
+      aspect-ratio: 16/9;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .port-item:nth-child(1) .port-thumb { background: linear-gradient(135deg, #1a1206 0%, #2a1f0a 50%, #0f0f0f 100%); }
+    .port-item:nth-child(2) .port-thumb { background: linear-gradient(135deg, #0a0f1a 0%, #0d1520 50%, #080808 100%); }
+    .port-item:nth-child(3) .port-thumb { background: linear-gradient(135deg, #1a0a0a 0%, #200d0d 50%, #0f0808 100%); }
+    .port-item:nth-child(4) .port-thumb { background: linear-gradient(135deg, #0a1a0e 0%, #0d2010 50%, #080f09 100%); }
+    .port-item:nth-child(5) .port-thumb { background: linear-gradient(135deg, #0f0a1a 0%, #140d22 50%, #090810 100%); }
+    .port-thumb::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 50%);
+    }
+    .port-waveform {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 40px;
+      display: flex; align-items: flex-end; gap: 2px;
+      padding: 0 1rem 0.5rem;
+      opacity: 0.4;
+    }
+    .wv-bar {
+      flex: 1;
+      background: var(--gold);
+      border-radius: 1px 1px 0 0;
+      transition: opacity 0.2s;
+    }
+    .port-thumb-icon {
+      font-size: 2rem;
+      position: relative; z-index: 1;
+      opacity: 0.6;
+    }
+    .port-overlay {
+      position: absolute; inset: 0;
+      background: rgba(201,169,110,0.08);
+      opacity: 0;
+      transition: opacity 0.3s;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .port-play {
+      width: 52px; height: 52px;
+      border: 2px solid var(--gold);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      transform: scale(0.8);
+      transition: transform 0.3s;
+    }
+    .port-item:hover .port-overlay { opacity: 1; }
+    .port-item:hover .port-play { transform: scale(1); }
+    .port-info { padding: 1.4rem 1.6rem; }
+    .port-genre {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.4rem;
+    }
+    .port-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+    .port-meta {
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    /* ── BOOKING ── */
+    #booking {
+      background: var(--black);
+      position: relative;
+      overflow: hidden;
+    }
+    #booking::before {
+      content: '';
+      position: absolute; top: -200px; left: 50%;
+      transform: translateX(-50%);
+      width: 800px; height: 800px;
+      background: radial-gradient(circle, rgba(201,169,110,0.05) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .booking-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 6rem;
+      align-items: start;
+    }
+    .booking-left {}
+    .booking-info-block {
+      margin-top: 3rem;
+      display: flex; flex-direction: column; gap: 1.6rem;
+    }
+    .booking-info-item {
+      display: flex; gap: 1.2rem; align-items: flex-start;
+      padding: 1.4rem;
+      border: 1px solid var(--border);
+      background: var(--deep);
+      transition: border-color 0.3s;
+    }
+    .booking-info-item:hover { border-color: var(--border-light); }
+    .booking-info-icon {
+      width: 36px; height: 36px;
+      background: var(--gold-dim);
+      border: 1px solid rgba(201,169,110,0.25);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+    .booking-info-title {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.25rem;
+    }
+    .booking-info-desc {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .booking-calendar-wrap {
+      border: 1px solid var(--border);
+      background: var(--deep);
+      overflow: hidden;
+      position: relative;
+    }
+    .booking-calendar-header {
+      padding: 1.4rem 2rem;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 0.8rem;
+    }
+    .cal-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+    }
+    .cal-dot:nth-child(1) { background: var(--red); }
+    .cal-dot:nth-child(2) { background: var(--gold); }
+    .cal-dot:nth-child(3) { background: #4caf50; }
+    .cal-label {
+      margin-left: auto;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .meetings-iframe-container { min-height: 660px; }
+
+    /* ── TESTIMONIALS ── */
+    #testimonials { background: var(--off-black); }
+    .testi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 3.5rem;
+    }
+    .testi-card {
+      background: var(--deep);
+      border: 1px solid var(--border);
+      padding: 2.2rem;
+      position: relative;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .testi-card:hover { border-color: var(--border-light); transform: translateY(-4px); }
+    .testi-stars {
+      display: flex; gap: 0.2rem;
+      margin-bottom: 1.2rem;
+    }
+    .testi-star { color: var(--gold); font-size: 0.8rem; }
+    .testi-text {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1rem;
+      line-height: 1.65;
+      color: var(--white);
+      margin-bottom: 1.6rem;
+    }
+    .testi-author { display: flex; align-items: center; gap: 1rem; }
+    .testi-avatar {
+      width: 40px; height: 40px;
+      background: var(--gold-dim);
+      border: 1px solid rgba(201,169,110,0.3);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--gold);
+      flex-shrink: 0;
+    }
+    .testi-name {
+      font-size: 0.82rem;
+      font-weight: 700;
+      margin-bottom: 0.15rem;
+    }
+    .testi-role {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--off-black);
+      border-top: 1px solid var(--border);
+      position: relative; z-index: 2;
+    }
+    .footer-top {
+      max-width: 1200px; margin: 0 auto;
+      padding: 4rem 3rem 3rem;
+      display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr;
+      gap: 4rem;
+    }
+    .footer-brand-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.9rem;
+    }
+    .footer-brand-name span { color: var(--gold); }
+    .footer-brand-desc {
+      font-size: 0.84rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 1.6rem;
+      max-width: 260px;
+    }
+    .footer-social { display: flex; gap: 0.8rem; }
+    .footer-social-link {
+      width: 36px; height: 36px;
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem;
+      text-decoration: none;
+      color: var(--muted);
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .footer-social-link:hover { border-color: var(--gold); color: var(--gold); }
+    .footer-col-title {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--white);
+      margin-bottom: 1.4rem;
+    }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.8rem; }
+    .footer-links a {
+      font-size: 0.84rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--white); }
+    .footer-bottom {
+      max-width: 1200px; margin: 0 auto;
+      padding: 1.5rem 3rem;
+      border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-copy {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      color: var(--faint);
+    }
+    .footer-tagline {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 0.78rem;
+      color: var(--faint);
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.5; }
+      50%       { opacity: 1; }
+    }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.75s ease, transform 0.75s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1100px) {
+      .services-grid { grid-template-columns: repeat(2, 1fr); }
+      .process-layout { grid-template-columns: 1fr; gap: 3rem; }
+      .process-aside { position: static; }
+      .booking-layout { grid-template-columns: 1fr; gap: 3rem; }
+      .footer-top { grid-template-columns: 1fr 1fr; gap: 2rem; }
+      .hero-stat-strip { display: none; }
+    }
+    @media (max-width: 768px) {
+      nav { padding: 1.2rem 1.5rem; }
+      .nav-links { display: none; }
+      #hero { padding: 0 1.5rem; }
+      .section-inner { padding: 4.5rem 1.5rem; }
+      .services-grid { grid-template-columns: 1fr; }
+      .portfolio-grid { grid-template-columns: 1fr 1fr; }
+      .port-item:nth-child(n) { grid-column: span 2; }
+      .port-item:nth-child(3), .port-item:nth-child(4) { grid-column: span 1; }
+      .testi-grid { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr; gap: 2rem; }
+      h1 { font-size: clamp(2.8rem, 11vw, 4rem); }
+      .portfolio-header { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
+      .hero-scroll { left: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <a href="#" class="nav-logo">Cashhcam<span>.</span></a>
+    <div class="nav-links">
+      <a href="#services">Services</a>
+      <a href="#process">Process</a>
+      <a href="#portfolio">Portfolio</a>
+      <a href="#testimonials">Artists</a>
+      <a href="#booking" class="nav-cta">Book a Session</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-lines"></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow">
+        <div class="hero-eyebrow-line"></div>
+        <span>Atlanta, GA · Est. 2019</span>
+      </div>
+      <h1>Where <em>Vision</em><br>Becomes<br>Sound.</h1>
+      <p class="hero-sub">Premium music production & audio engineering for artists who refuse to compromise. CashhCam Productions — building legacies, one record at a time.</p>
+      <div class="hero-actions">
+        <a href="#booking" class="btn-primary">
+          <span>Book a Session</span>
+          <span>→</span>
+        </a>
+        <a href="#portfolio" class="btn-ghost">
+          <span>Hear the Work</span>
+        </a>
+      </div>
+    </div>
+    <div class="hero-stat-strip">
+      <div class="hero-stat">
+        <div class="hero-stat-num">200+</div>
+        <div class="hero-stat-label">Records Produced</div>
+      </div>
+      <div class="hero-divider"></div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">50+</div>
+        <div class="hero-stat-label">Artists Served</div>
+      </div>
+      <div class="hero-divider"></div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">5yr</div>
+        <div class="hero-stat-label">In the Industry</div>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <div class="hero-scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-wrap">
+    <div class="marquee-track" id="marquee-track">
+      <span>
+        <span class="marquee-dot"></span> Mixing &amp; Mastering
+        <span class="marquee-dot"></span> Beat Production
+        <span class="marquee-dot"></span> Vocal Recording
+        <span class="marquee-dot"></span> Full Arrangement
+        <span class="marquee-dot"></span> Sound Design
+        <span class="marquee-dot"></span> Audio Engineering
+        <span class="marquee-dot"></span> Artist Development
+        <span class="marquee-dot"></span> Session Musician Coordination
+        <span class="marquee-dot"></span> Mixing &amp; Mastering
+        <span class="marquee-dot"></span> Beat Production
+        <span class="marquee-dot"></span> Vocal Recording
+        <span class="marquee-dot"></span> Full Arrangement
+        <span class="marquee-dot"></span> Sound Design
+        <span class="marquee-dot"></span> Audio Engineering
+        <span class="marquee-dot"></span> Artist Development
+        <span class="marquee-dot"></span> Session Musician Coordination
+      </span>
+    </div>
+  </div>
+
+  <!-- BOOKING -->
+  <section id="booking">
+    <div class="section-inner">
+      <div class="booking-layout">
+        <div class="booking-left">
+          <div class="section-label reveal">
+            <div class="section-label-line"></div>
+            <span>Reserve Your Time</span>
+          </div>
+          <h2 class="section-heading reveal reveal-delay-1">Book Your<br><em>Session</em><br>Today.</h2>
+          <p class="section-sub reveal reveal-delay-2">Select a time that works for you and let's start building something unforgettable. All sessions confirmed instantly.</p>
+
+          <div class="booking-info-block">
+            <div class="booking-info-item reveal reveal-delay-1">
+              <div class="booking-info-icon">📍</div>
+              <div>
+                <div class="booking-info-title">Location</div>
+                <div class="booking-info-desc">Atlanta, GA · Remote sessions available worldwide via high-res audio transfer.</div>
+              </div>
+            </div>
+            <div class="booking-info-item reveal reveal-delay-2">
+              <div class="booking-info-icon">⏱️</div>
+              <div>
+                <div class="booking-info-title">Session Length</div>
+                <div class="booking-info-desc">Half-day (4hr), full-day (8hr), and block packages available. Custom quotes on request.</div>
+              </div>
+            </div>
+            <div class="booking-info-item reveal reveal-delay-3">
+              <div class="booking-info-icon">📧</div>
+              <div>
+                <div class="booking-info-title">Direct Contact</div>
+                <div class="booking-info-desc">bookings@cashhcamproductions.com — or fill out the calendar and we'll reach out within 24 hours.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="booking-calendar-wrap reveal reveal-delay-2">
+          <div class="booking-calendar-header">
+            <div class="cal-dot"></div>
+            <div class="cal-dot"></div>
+            <div class="cal-dot"></div>
+            <div class="cal-label">cashhcam productions — scheduling</div>
+          </div>
+          <!-- HubSpot Meetings Embed -->
+          <div class="meetings-iframe-container" data-src="https://meetings-na2.hubspot.com/camille-n-a?embed=true"></div>
+          <script type="text/javascript" src="https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js"></script>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="section-inner">
+      <div class="section-label reveal">
+        <div class="section-label-line"></div>
+        <span>What We Offer</span>
+      </div>
+      <h2 class="section-heading reveal reveal-delay-1">
+        Services Built for<br><em>Serious Artists</em>
+      </h2>
+      <p class="section-sub reveal reveal-delay-2">Every service is crafted to elevate your sound and help you stand out in a crowded market.</p>
+
+      <div class="services-grid reveal reveal-delay-3">
+        <div class="service-card">
+          <span class="service-num">01</span>
+          <div class="service-icon">🎛️</div>
+          <h3 class="service-title">Beat Production</h3>
+          <p class="service-desc">Custom-crafted instrumentals built from the ground up for your vision. From trap to R&B, soul to drill — we speak every genre fluently.</p>
+          <div class="service-tags">
+            <span class="service-tag">Trap</span>
+            <span class="service-tag">R&B</span>
+            <span class="service-tag">Drill</span>
+            <span class="service-tag">Soul</span>
+          </div>
+        </div>
+        <div class="service-card">
+          <span class="service-num">02</span>
+          <div class="service-icon">🎙️</div>
+          <h3 class="service-title">Vocal Recording</h3>
+          <p class="service-desc">Professional recording sessions in a pristine acoustic environment. We capture every nuance, every breath, every emotion in your performance.</p>
+          <div class="service-tags">
+            <span class="service-tag">Studio Sessions</span>
+            <span class="service-tag">Vocal Direction</span>
+            <span class="service-tag">Punch-ins</span>
+          </div>
+        </div>
+        <div class="service-card">
+          <span class="service-num">03</span>
+          <div class="service-icon">🎚️</div>
+          <h3 class="service-title">Mixing & Mastering</h3>
+          <p class="service-desc">Radio-ready sound that translates on every platform and speaker. Your mix deserves to compete at the highest level — and it will.</p>
+          <div class="service-tags">
+            <span class="service-tag">Stereo Mix</span>
+            <span class="service-tag">Mastering</span>
+            <span class="service-tag">Stems</span>
+          </div>
+        </div>
+        <div class="service-card">
+          <span class="service-num">04</span>
+          <div class="service-icon">🎼</div>
+          <h3 class="service-title">Full Production</h3>
+          <p class="service-desc">From concept to completed record — we handle every stage of your project with meticulous attention to sonic detail and commercial impact.</p>
+          <div class="service-tags">
+            <span class="service-tag">A–Z Production</span>
+            <span class="service-tag">Arrangement</span>
+          </div>
+        </div>
+        <div class="service-card">
+          <span class="service-num">05</span>
+          <div class="service-icon">🔊</div>
+          <h3 class="service-title">Sound Design</h3>
+          <p class="service-desc">Custom patches, unique samples, and signature textures that make your music instantly recognizable and sonically distinct.</p>
+          <div class="service-tags">
+            <span class="service-tag">Custom Patches</span>
+            <span class="service-tag">Sample Packs</span>
+          </div>
+        </div>
+        <div class="service-card">
+          <span class="service-num">06</span>
+          <div class="service-icon">🌟</div>
+          <h3 class="service-title">Artist Development</h3>
+          <p class="service-desc">Strategic guidance on building your brand, refining your artistry, and positioning yourself for long-term success in the music industry.</p>
+          <div class="service-tags">
+            <span class="service-tag">Branding</span>
+            <span class="service-tag">Strategy</span>
+            <span class="service-tag">Growth</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section id="process">
+    <div class="section-inner">
+      <div class="section-label reveal">
+        <div class="section-label-line"></div>
+        <span>How We Work</span>
+      </div>
+      <h2 class="section-heading reveal reveal-delay-1">A Process <em>Designed</em><br>Around You</h2>
+
+      <div class="process-layout">
+        <div class="process-steps reveal reveal-delay-2">
+          <div class="process-step">
+            <div class="process-step-num">01</div>
+            <div class="process-step-body">
+              <h3 class="process-step-title">Discovery Call</h3>
+              <p class="process-step-desc">We start by understanding your vision, references, timeline, and goals. No cookie-cutter approach — every session is tailored to you.</p>
+            </div>
+          </div>
+          <div class="process-step">
+            <div class="process-step-num">02</div>
+            <div class="process-step-body">
+              <h3 class="process-step-title">Book Your Session</h3>
+              <p class="process-step-desc">Use our live calendar to secure your slot. Flexible scheduling with confirmation and reminder emails sent automatically.</p>
+            </div>
+          </div>
+          <div class="process-step">
+            <div class="process-step-num">03</div>
+            <div class="process-step-body">
+              <h3 class="process-step-title">Studio Session</h3>
+              <p class="process-step-desc">Come in, lock in, and create. Whether virtual or in-person, we engineer an environment where your best work flows effortlessly.</p>
+            </div>
+          </div>
+          <div class="process-step">
+            <div class="process-step-num">04</div>
+            <div class="process-step-body">
+              <h3 class="process-step-title">Revisions & Delivery</h3>
+              <p class="process-step-desc">We refine until you're fully satisfied. Final deliverables include all stems, WAV masters, and distribution-ready files.</p>
+            </div>
+          </div>
+          <div class="process-step">
+            <div class="process-step-num">05</div>
+            <div class="process-step-body">
+              <h3 class="process-step-title">Release Support</h3>
+              <p class="process-step-desc">From press assets to playlist pitching guidance, we support your release strategy beyond the studio doors.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="process-aside reveal reveal-delay-3">
+          <div class="process-aside-card">
+            <p class="aside-quote">"The difference between good and legendary is in the details — and that's exactly where we live."</p>
+            <div class="aside-attr">— CashhCam Productions</div>
+            <div class="aside-divider"></div>
+            <div class="aside-facts">
+              <div>
+                <div class="aside-fact-num">48h</div>
+                <div class="aside-fact-label">Average mix<br>turnaround</div>
+              </div>
+              <div>
+                <div class="aside-fact-num">100%</div>
+                <div class="aside-fact-label">Satisfaction<br>guarantee</div>
+              </div>
+              <div>
+                <div class="aside-fact-num">∞</div>
+                <div class="aside-fact-label">Revision<br>rounds</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PORTFOLIO -->
+  <section id="portfolio">
+    <div class="section-inner">
+      <div class="portfolio-header">
+        <div>
+          <div class="section-label reveal">
+            <div class="section-label-line"></div>
+            <span>Selected Work</span>
+          </div>
+          <h2 class="section-heading reveal reveal-delay-1">The <em>Portfolio</em></h2>
+        </div>
+        <a href="#booking" class="btn-ghost reveal reveal-delay-2">Start Your Project →</a>
+      </div>
+
+      <div class="portfolio-grid">
+        <div class="port-item reveal">
+          <div class="port-thumb">
+            <span class="port-thumb-icon">🎵</span>
+            <div class="port-waveform" id="wv1"></div>
+            <div class="port-overlay"><div class="port-play">▶</div></div>
+          </div>
+          <div class="port-info">
+            <div class="port-genre">Trap / Hip-Hop</div>
+            <div class="port-title">Midnight Moves EP</div>
+            <div class="port-meta">Production · Mixing · Mastering</div>
+          </div>
+        </div>
+        <div class="port-item reveal reveal-delay-1">
+          <div class="port-thumb">
+            <span class="port-thumb-icon">🎤</span>
+            <div class="port-waveform" id="wv2"></div>
+            <div class="port-overlay"><div class="port-play">▶</div></div>
+          </div>
+          <div class="port-info">
+            <div class="port-genre">R&B / Soul</div>
+            <div class="port-title">Still Waters</div>
+            <div class="port-meta">Full Production · Vocal Direction</div>
+          </div>
+        </div>
+        <div class="port-item reveal reveal-delay-1">
+          <div class="port-thumb">
+            <span class="port-thumb-icon">🥁</span>
+            <div class="port-waveform" id="wv3"></div>
+            <div class="port-overlay"><div class="port-play">▶</div></div>
+          </div>
+          <div class="port-info">
+            <div class="port-genre">Drill</div>
+            <div class="port-title">Street Psalms</div>
+            <div class="port-meta">Beats · Engineering</div>
+          </div>
+        </div>
+        <div class="port-item reveal reveal-delay-2">
+          <div class="port-thumb">
+            <span class="port-thumb-icon">🎸</span>
+            <div class="port-waveform" id="wv4"></div>
+            <div class="port-overlay"><div class="port-play">▶</div></div>
+          </div>
+          <div class="port-info">
+            <div class="port-genre">Neo Soul</div>
+            <div class="port-title">Golden Frequencies</div>
+            <div class="port-meta">Arrangement · Mixing</div>
+          </div>
+        </div>
+        <div class="port-item reveal reveal-delay-3">
+          <div class="port-thumb">
+            <span class="port-thumb-icon">🎹</span>
+            <div class="port-waveform" id="wv5"></div>
+            <div class="port-overlay"><div class="port-play">▶</div></div>
+          </div>
+          <div class="port-info">
+            <div class="port-genre">Pop / Alternative</div>
+            <div class="port-title">Parallel Lines</div>
+            <div class="port-meta">Sound Design · Mastering</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section id="testimonials">
+    <div class="section-inner">
+      <div class="section-label reveal">
+        <div class="section-label-line"></div>
+        <span>Artist Testimonials</span>
+      </div>
+      <h2 class="section-heading reveal reveal-delay-1">What Artists<br><em>Say About Us</em></h2>
+
+      <div class="testi-grid">
+        <div class="testi-card reveal reveal-delay-1">
+          <div class="testi-stars">
+            <span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span>
+          </div>
+          <p class="testi-text">"CashhCam took my rough demo and turned it into something I'm genuinely proud of. The attention to detail in the mix is unmatched — you can hear every layer."</p>
+          <div class="testi-author">
+            <div class="testi-avatar">JK</div>
+            <div>
+              <div class="testi-name">Jay Koda</div>
+              <div class="testi-role">Rapper · Atlanta, GA</div>
+            </div>
+          </div>
+        </div>
+        <div class="testi-card reveal reveal-delay-2">
+          <div class="testi-stars">
+            <span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span>
+          </div>
+          <p class="testi-text">"From the first session I knew this was different. She understood my vision immediately and helped me push it further than I thought possible. The record sounds incredible."</p>
+          <div class="testi-author">
+            <div class="testi-avatar">MV</div>
+            <div>
+              <div class="testi-name">Mavi Sol</div>
+              <div class="testi-role">Singer-Songwriter · Miami, FL</div>
+            </div>
+          </div>
+        </div>
+        <div class="testi-card reveal reveal-delay-3">
+          <div class="testi-stars">
+            <span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span>
+          </div>
+          <p class="testi-text">"I've worked with a lot of engineers and CashhCam is in a league of her own. Fast turnaround, clean communication, and the master came back sounding like a major label release."</p>
+          <div class="testi-author">
+            <div class="testi-avatar">TR</div>
+            <div>
+              <div class="testi-name">Tremaine Ray</div>
+              <div class="testi-role">R&B Artist · Houston, TX</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand-name">Cashhcam<span>.</span></div>
+        <p class="footer-brand-desc">Premium music production and audio engineering for artists who demand excellence in every note.</p>
+        <div class="footer-social">
+          <a href="#" class="footer-social-link" title="Instagram">IG</a>
+          <a href="#" class="footer-social-link" title="Twitter/X">𝕏</a>
+          <a href="#" class="footer-social-link" title="SoundCloud">SC</a>
+          <a href="#" class="footer-social-link" title="YouTube">YT</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Services</div>
+        <ul class="footer-links">
+          <li><a href="#services">Beat Production</a></li>
+          <li><a href="#services">Vocal Recording</a></li>
+          <li><a href="#services">Mixing & Mastering</a></li>
+          <li><a href="#services">Full Production</a></li>
+          <li><a href="#services">Artist Development</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Company</div>
+        <ul class="footer-links">
+          <li><a href="#process">Our Process</a></li>
+          <li><a href="#portfolio">Portfolio</a></li>
+          <li><a href="#testimonials">Testimonials</a></li>
+          <li><a href="#booking">Book a Session</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Contact</div>
+        <ul class="footer-links">
+          <li><a href="mailto:bookings@cashhcamproductions.com">bookings@cashhcam<br>productions.com</a></li>
+          <li><a href="#">Atlanta, GA</a></li>
+          <li><a href="#">Remote Available</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2024 CashhCam Productions. All rights reserved.</div>
+      <div class="footer-tagline">Where Vision Becomes Sound.</div>
+    </div>
+  </footer>
+
+  <script>
+    // ── Navbar scroll
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 60);
+    });
+
+    // ── Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+    }, { threshold: 0.12 });
+    reveals.forEach(el => observer.observe(el));
+
+    // ── Generate waveform bars
+    function buildWaveform(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      for (let i = 0; i < 40; i++) {
+        const bar = document.createElement('div');
+        bar.className = 'wv-bar';
+        const h = 4 + Math.random() * 28;
+        bar.style.height = h + 'px';
+        bar.style.opacity = 0.3 + Math.random() * 0.7;
+        el.appendChild(bar);
+      }
+    }
+    ['wv1','wv2','wv3','wv4','wv5'].forEach(buildWaveform);
+
+    // ── Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+      });
+    });
+  </script>
+</body>
+</html>
