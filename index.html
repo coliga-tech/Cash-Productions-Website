@@ -556,6 +556,81 @@
       color: var(--muted);
     }
 
+    /* ── PORTFOLIO TOGGLE ── */
+    .portfolio-toggle-wrap {
+      display: flex;
+      justify-content: center;
+      margin-top: 3rem;
+    }
+    .portfolio-toggle-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: transparent;
+      color: var(--white);
+      font-family: 'Syne', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 1rem 2rem;
+      border: 1px solid var(--border-light);
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s, transform 0.2s;
+    }
+    .portfolio-toggle-btn:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+      transform: translateY(-2px);
+    }
+    .toggle-arrow {
+      display: inline-block;
+      transition: transform 0.3s ease;
+    }
+    .portfolio-toggle-btn.expanded .toggle-arrow {
+      transform: rotate(180deg);
+    }
+    
+    /* ── PORTFOLIO GRID ── */
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.2rem;
+    }
+    .port-item {
+      background: var(--deep);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      position: relative;
+      display: none;
+    }
+    .port-item.visible {
+      display: block;
+    }
+    .port-item .port-embed {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      display: block;
+      border: none;
+    }
+    .port-info {
+      padding: 1.2rem 1.4rem;
+    }
+    .port-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.2rem;
+    }
+    .port-meta {
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+    
+    @media (max-width: 768px) {
+      .portfolio-grid { grid-template-columns: 1fr; }
+    }
+
     /* ── BOOKING ── */
     #booking {
       background: var(--black);
@@ -1118,68 +1193,13 @@
         </div>
         <a href="#booking" class="btn-ghost reveal reveal-delay-2">Start Your Project →</a>
       </div>
-
-      <div class="portfolio-grid">
-        <div class="port-item reveal">
-          <div class="port-thumb">
-            <span class="port-thumb-icon">🎵</span>
-            <div class="port-waveform" id="wv1"></div>
-            <div class="port-overlay"><div class="port-play">▶</div></div>
-          </div>
-          <div class="port-info">
-            <div class="port-genre">Trap / Hip-Hop</div>
-            <div class="port-title">Midnight Moves EP</div>
-            <div class="port-meta">Production · Mixing · Mastering</div>
-          </div>
-        </div>
-        <div class="port-item reveal reveal-delay-1">
-          <div class="port-thumb">
-            <span class="port-thumb-icon">🎤</span>
-            <div class="port-waveform" id="wv2"></div>
-            <div class="port-overlay"><div class="port-play">▶</div></div>
-          </div>
-          <div class="port-info">
-            <div class="port-genre">R&B / Soul</div>
-            <div class="port-title">Still Waters</div>
-            <div class="port-meta">Full Production · Vocal Direction</div>
-          </div>
-        </div>
-        <div class="port-item reveal reveal-delay-1">
-          <div class="port-thumb">
-            <span class="port-thumb-icon">🥁</span>
-            <div class="port-waveform" id="wv3"></div>
-            <div class="port-overlay"><div class="port-play">▶</div></div>
-          </div>
-          <div class="port-info">
-            <div class="port-genre">Drill</div>
-            <div class="port-title">Street Psalms</div>
-            <div class="port-meta">Beats · Engineering</div>
-          </div>
-        </div>
-        <div class="port-item reveal reveal-delay-2">
-          <div class="port-thumb">
-            <span class="port-thumb-icon">🎸</span>
-            <div class="port-waveform" id="wv4"></div>
-            <div class="port-overlay"><div class="port-play">▶</div></div>
-          </div>
-          <div class="port-info">
-            <div class="port-genre">Neo Soul</div>
-            <div class="port-title">Golden Frequencies</div>
-            <div class="port-meta">Arrangement · Mixing</div>
-          </div>
-        </div>
-        <div class="port-item reveal reveal-delay-3">
-          <div class="port-thumb">
-            <span class="port-thumb-icon">🎹</span>
-            <div class="port-waveform" id="wv5"></div>
-            <div class="port-overlay"><div class="port-play">▶</div></div>
-          </div>
-          <div class="port-info">
-            <div class="port-genre">Pop / Alternative</div>
-            <div class="port-title">Parallel Lines</div>
-            <div class="port-meta">Sound Design · Mastering</div>
-          </div>
-        </div>
+  
+      <div class="portfolio-grid" id="portfolio-grid"></div>
+  
+      <div class="portfolio-toggle-wrap">
+        <button class="portfolio-toggle-btn" id="portfolio-toggle">
+          View More <span class="toggle-arrow">↓</span>
+        </button>
       </div>
     </div>
   </section>
@@ -1298,20 +1318,77 @@
     }, { threshold: 0.12 });
     reveals.forEach(el => observer.observe(el));
 
-    // ── Generate waveform bars
-    function buildWaveform(id) {
-      const el = document.getElementById(id);
-      if (!el) return;
-      for (let i = 0; i < 40; i++) {
-        const bar = document.createElement('div');
-        bar.className = 'wv-bar';
-        const h = 4 + Math.random() * 28;
-        bar.style.height = h + 'px';
-        bar.style.opacity = 0.3 + Math.random() * 0.7;
-        el.appendChild(bar);
+    // ── PORTFOLIO ──────────────────────────────────────────
+    // Add your YouTube video IDs and labels here.
+    // To swap a video, just replace the id string.
+    // Find the ID in any YouTube URL: youtube.com/watch?v=THIS_PART
+    const PORTFOLIO_VIDEOS = [
+      { id: "P5i8toWRTc4",  title: "Big Mama - Latto", meta: "Slowed Mix" },
+      { id: "Z6L0F2-vxbQ",  title: "Everglades - AZIEDOESNTEXIST", meta: "Slowed Mix" },
+      { id: "qlN5FVsAh_A",  title: "Copper Cover - Latto", meta: "Slowed Mix" },
+      { id: "8BI9tX3e-7I",  title: "U Kno What To Do (UKWTD) - Sexyy Red", meta: "Slowed Mix" },
+      { id: "SIFBinfB7o0",  title: "Hang Wit a Bad Bih - Sexyy Red & Key Glock", meta: "Slowed Mix" },
+      { id: "yyvmB6ne62s",  title: "Lucky - Cannelle", meta: "Slowed Mix" },
+      { id: "VIDEO_ID_7",  title: "Track Title 6", meta: "Slowed Mix" },
+      { id: "VIDEO_ID_8",  title: "Track Title 7", meta: "Slowed Mix" },
+      { id: "VIDEO_ID_9",  title: "Track Title 8", meta: "Slowed Mix" },
+      { id: "VIDEO_ID_10",  title: "Track Title 9", meta: "Slowed Mix" },
+      // ... add as many as you like
+    ];
+    
+    const INITIAL_COUNT = 6; // videos shown before "View More"
+    
+    function buildPortfolio() {
+      const grid = document.getElementById('portfolio-grid');
+      const btn  = document.getElementById('portfolio-toggle');
+      if (!grid || !btn) return;
+    
+      // Render all cards
+      PORTFOLIO_VIDEOS.forEach((video, i) => {
+        const item = document.createElement('div');
+        item.className = 'port-item reveal' + (i < INITIAL_COUNT ? ' visible' : '');
+    
+        item.innerHTML = `
+          <iframe
+            class="port-embed"
+            src="https://www.youtube.com/embed/${video.id}?rel=0&modestbranding=1"
+            title="${video.title}"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+            loading="lazy">
+          </iframe>
+          <div class="port-info">
+            <div class="port-title">${video.title}</div>
+            <div class="port-meta">${video.meta}</div>
+          </div>
+        `;
+    
+        grid.appendChild(item);
+      });
+    
+      // Hide toggle button if all videos already visible
+      if (PORTFOLIO_VIDEOS.length <= INITIAL_COUNT) {
+        btn.style.display = 'none';
+        return;
       }
+    
+      // Toggle expand / collapse
+      let expanded = false;
+      btn.addEventListener('click', () => {
+        expanded = !expanded;
+        const items = grid.querySelectorAll('.port-item');
+        items.forEach((item, i) => {
+          if (i >= INITIAL_COUNT) {
+            item.classList.toggle('visible', expanded);
+          }
+        });
+        btn.classList.toggle('expanded', expanded);
+        btn.querySelector('span:first-child') .textContent = expanded ? 'Show Less ' : 'View More ';
+      });
     }
-    ['wv1','wv2','wv3','wv4','wv5'].forEach(buildWaveform);
+    
+    buildPortfolio();
+    // ───────────────────────────────────────────────────────
 
     // ── Smooth scroll for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(a => {
