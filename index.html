@@ -275,7 +275,7 @@
           transparent 100%
         );
     }
-
+    
     @media (max-width: 768px) {
       nav { padding: 1.2rem 1.5rem; }
       .nav-links { display: none; }
@@ -291,30 +291,22 @@
       .portfolio-header { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
       .hero-scroll { left: 1.5rem; }
     
-      #hero {
-        padding-top: 70px;
-      }
-    
       .hero-image-wrap {
-        position: fixed;
-        top: 60px;
-        left: 0;
-        width: 100%;
-        height: calc(100vh - 60px);
-        border-radius: 0 !important;
-        overflow: hidden;
-        z-index: 0;
+        display: none;
       }
     
-      .hero-image {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: center top;
-        opacity: 0.35;
-        border-radius: 0 !important;
-        -webkit-mask-image: none;
-        mask-image: none;
+      #hero {
+        background-image: url('/images/hero-image.png');
+        background-size: cover;
+        background-position: center top;
+        background-attachment: local;
+      }
+    
+      .hero-bg {
+        background: rgba(240, 240, 244, 0.65);
+        position: absolute;
+        inset: 0;
+        z-index: 0;
       }
     }
     
