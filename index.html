@@ -242,6 +242,50 @@
     }
     .hero-divider { width: 1px; height: 60px; background: var(--magenta); margin-left: auto; }
 
+    /* ── HERO IMAGE ── */
+    .hero-image-wrap {
+      position: absolute;
+      right: 8%;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 1;
+      width: clamp(280px, 36vw, 580px);
+      border-radius: 32px;
+      overflow: hidden;
+    }
+    
+    .hero-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      border-radius: 32px;
+    
+      /* Fades all four edges into the background */
+      -webkit-mask-image:
+        radial-gradient(
+          ellipse 85% 85% at 50% 50%,
+          black 40%,
+          transparent 100%
+        );
+      mask-image:
+        radial-gradient(
+          ellipse 85% 85% at 50% 50%,
+          black 40%,
+          transparent 100%
+        );
+    }
+
+    @media (max-width: 768px) {
+      .hero-image-wrap {
+        position: static;
+        transform: none;
+        width: 80%;
+        margin: 2rem auto 0;
+        opacity: 0.5;
+      }
+    }
+    
     /* ── MARQUEE ── */
     .marquee-wrap {
       position: relative;
@@ -960,6 +1004,9 @@
   <section id="hero">
     <div class="hero-bg"></div>
     <div class="hero-lines"></div>
+    <div class="hero-image-wrap">
+      <img src="/images/hero-image.png" alt="CashhCam in the Stu" class="hero-image" />
+    </div>
     <div class="hero-content">
       <div class="hero-eyebrow">
         <div class="hero-eyebrow-line"></div>
