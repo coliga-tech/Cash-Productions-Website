@@ -903,8 +903,15 @@
     }
     
     @media (max-width: 768px) {
-      .hamburger { display: flex; }
-      .nav-links { display: none !important; }
+      nav {
+        padding: 1.2rem 1.5rem !important;
+        width: 100%;
+        box-sizing: border-box;
+      }
+    
+      nav.scrolled {
+        padding: 1.2rem 1.5rem !important;
+      }
     }
   </style>
 </head>
