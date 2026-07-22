@@ -115,13 +115,14 @@
       justify-content: center;
       padding: 0 3rem;
       overflow: hidden;
+      background-image: url('/images/hero-image.png');
+      background-size: cover;
+      background-position: center center;
+      background-attachment: fixed;
     }
     .hero-bg {
       position: absolute; inset: 0;
-      background:
-        radial-gradient(ellipse 70% 60% at 65% 40%, rgba(201,169,110,0.08) 0%, transparent 70%),
-        radial-gradient(ellipse 40% 40% at 20% 70%, rgba(224,92,75,0.04) 0%, transparent 60%),
-        linear-gradient(160deg, #e8e8ee 0%, #f0f0f4 100%);
+      background: rgba(240, 240, 244, 0.55);
       z-index: 0;
     }
     .hero-lines {
@@ -260,7 +261,7 @@
     .hero-divider { width: 1px; height: 60px; background: var(--magenta); margin-left: auto; }
 
     /* ── HERO IMAGE ── */
-    .hero-image-wrap {
+    /* .hero-image-wrap {
       position: absolute;
       right: 14%;
       top: 60%;
@@ -269,14 +270,14 @@
       width: clamp(360px, 45vw, 720px);
       border-radius: 32px;
       overflow: hidden;
-    }
+    } */
     
-    .hero-image {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      border-radius: 32px;
+    /* .hero-image {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          display: block;
+          border-radius: 32px; */
     
       /* Fades all four edges into the background */
       -webkit-mask-image:
