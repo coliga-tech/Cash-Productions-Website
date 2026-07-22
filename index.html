@@ -832,12 +832,86 @@
     @media (max-width: 560px) {
       .portfolio-grid { grid-template-columns: 1fr; }
     }
+    
+    /* ── HAMBURGER ── */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.4rem;
+      z-index: 200;
+    }
+    .hamburger-bar {
+      width: 24px;
+      height: 2px;
+      background: var(--indigo);
+      border-radius: 2px;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    .hamburger.open .hamburger-bar:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+    .hamburger.open .hamburger-bar:nth-child(2) {
+      opacity: 0;
+    }
+    .hamburger.open .hamburger-bar:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+    
+    /* ── MOBILE MENU DRAWER ── */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: var(--grey);
+      z-index: 150;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2.5rem;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .mobile-menu.open {
+      display: flex;
+      opacity: 1;
+    }
+    .mobile-menu a {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--indigo);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: color 0.2s;
+    }
+    .mobile-menu a:hover { color: var(--magenta); }
+    .mobile-menu .mobile-cta {
+      background: var(--magenta);
+      color: var(--grey) !important;
+      font-family: 'Syne', sans-serif;
+      font-size: 0.85rem !important;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 1rem 2.5rem;
+      margin-top: 1rem;
+    }
+    
+    @media (max-width: 768px) {
+      .hamburger { display: flex; }
+      .nav-links { display: none !important; }
+    }
   </style>
 </head>
 <body>
 
   <!-- NAV -->
-  <nav id="navbar">
+    <nav id="navbar">
     <a href="#" class="nav-logo">
       <img src="/images/CashhCam-logo.png" alt="CashhCam Productions" class="nav-logo-img" />
       CashhCam Productions<span>.</span>
@@ -849,7 +923,21 @@
       <a href="#testimonials">Artists</a>
       <a href="#booking" class="nav-cta">Book a Session</a>
     </div>
+    <button class="hamburger" id="hamburger" aria-label="Open menu">
+      <div class="hamburger-bar"></div>
+      <div class="hamburger-bar"></div>
+      <div class="hamburger-bar"></div>
+    </button>
   </nav>
+  
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="#services" class="mobile-nav-link">Services</a>
+    <a href="#process" class="mobile-nav-link">Process</a>
+    <a href="#portfolio" class="mobile-nav-link">Portfolio</a>
+    <a href="#testimonials" class="mobile-nav-link">Artists</a>
+    <a href="#booking" class="mobile-cta mobile-nav-link">Book a Session</a>
+  </div>
 
   <!-- HERO -->
   <section id="hero">
@@ -1347,6 +1435,24 @@
       a.addEventListener('click', e => {
         const target = document.querySelector(a.getAttribute('href'));
         if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+      });
+    });
+    // ── Hamburger menu
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      mobileMenu.classList.toggle('open');
+      document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+    });
+    
+    // Close menu when a link is clicked
+    document.querySelectorAll('.mobile-nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        hamburger.classList.remove('open');
+        mobileMenu.classList.remove('open');
+        document.body.style.overflow = '';
       });
     });
   </script>
