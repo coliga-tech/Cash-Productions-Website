@@ -683,28 +683,6 @@
       color: var(--magenta);
     }
     
-    /* Mobile */
-    @media (max-width: 768px) {
-      .special-layout {
-        grid-template-columns: 1fr;
-        gap: 3rem;
-        align-items: stretch;
-      }
-      .special-right {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-      }
-      .special-card {
-        margin: 0 auto;
-        width: 100%;
-        max-width: 100%;
-        box-sizing: border-box;
-      }
-      .special-price { font-size: 3rem; }
-      .special-free-label { font-size: 2.2rem; }
-    }
-    
     /* ── BOOKING ── */
     #booking {
       background: var(--grey);
@@ -957,15 +935,17 @@
     /* ── RESPONSIVE: 768px ── */
     @media (max-width: 768px) {
       html, body { overflow-x: hidden; }
-
+    
       nav {
-        padding: 1.2rem 1.5rem;
-        background: var(--faint) !important;
-        border-bottom: 1px solid var(--border);
+        padding: 1.2rem 1.5rem !important;
+        width: 100%;
+        box-sizing: border-box;
       }
+      nav.scrolled { padding: 1.2rem 1.5rem !important; }
       .nav-logo-img { height: 30px; }
-      .nav-links { display: none; }
-
+      .nav-links { display: none !important; }
+      .hamburger { display: flex; }
+    
       #hero {
         padding: 70px 1.5rem 0 1.5rem;
         background-image: url('/images/hero-image.png');
@@ -978,8 +958,29 @@
         inset: 0;
         z-index: 0;
       }
-
-      .section-inner { padding: 4.5rem 1.5rem; }
+    
+      .section-inner {
+        padding: 4.5rem 1.5rem;
+        box-sizing: border-box;
+        overflow: hidden;
+      }
+    
+      .special-layout {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      .special-right {
+        width: 100%;
+        box-sizing: border-box;
+      }
+      .special-card {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 1.8rem;
+      }
+      .special-price { font-size: 3rem; }
+      .special-free-label { font-size: 2.2rem; }
+    
       .services-grid { grid-template-columns: 1fr !important; }
       .service-card { padding: 1.6rem 1.2rem; }
       .portfolio-grid { grid-template-columns: 1fr !important; }
